@@ -767,9 +767,9 @@
   const STUDENT_HASH = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3";
   const PARENT_HASH = "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb9";
   const ADMIN_PASS = "Kudozaiadmin2026";
-  const ENC_TOKEN_STUDENT = "0GjWA5SyvEQVDiFKIkmXR0uXDE1Vvgwp549kuD/tHg+pnOLHN2XeEvqdKwGJ2rt+Ny7rHd2nINiF5j4f8ONFdrWGf/aMixL+sJ1HaHNKFWAgIIr0C5dyEyRgGQ3hp7YNRbwELbrQgy6iRV1pQQOLQA==";
-  const ENC_TOKEN_PARENT = "3xmLQJVKggOZL0SuzuS2gBflQ8WSuPVZ6qSGfZGPtxtjbetdT9B8JzSxdml/ze1K7hgGJ5sBvHnnNVBxm/qkg+oOknjzO6F2RfbPvef0G+dLL2sYdWL83SdcXcBmkwR1e0wsNPpoONUdiBEVW2uD7Q==";
-  const ENC_TOKEN_ADMIN = "d9U8UXjOjOMrG2+4deoyp96i/3vQVVHrozm/8ouHG7hPxVNCjjogqry341+jLTskQgBRXM2rxHv+9uIVkJeHsODx7tDXK7KYN39zclsF1LQTfMbPqlcUNvxaFRN8EEzcgdUSAoENyj7STWzh4znRUA==";
+  const ENC_TOKEN_STUDENT = "FcEwNfhUv/6NEN62MeyDHWlEEIbInlPsfj5k/J7xm2aXn+s0EVIXSahf1V4jhVRslrYWRWnAD53AHFXz+vdeHE3SX6iRIYcr8y06VRt+D7ilkJpvDYJyZn1TvJkmgT6sFqvW8Pt4Wa1jYjIjnVRlWw==";
+  const ENC_TOKEN_PARENT = "KUb3weEX6Jqzjpxv4qKbb/xrOZMbjGXy94ArkUiJ3KpoN3cWmiWg3g5wRJWsxon39sT7dw16NC0HbP8zy+B4qn44X1Q/JLEH5lcWd8flqAkUWEyuQugVGqOP2xrF95IUIO9KCcGffzfIFJhtuwm0rg==";
+  const ENC_TOKEN_ADMIN = "BFkPuFhTbj2RXCMiFakcZ41N/2FvGytWjKeXz5lUHn462uhl27TWk7SStx4xVSaQkCmAf7+JzdSvWsopW4v03wZjUGLJ6AkLvL8G8YVnLe+phmlXXarpDZ2/UgaVj40YYeT5NdRmohCrzN4Fu6HuAQ==";
 
   let currentRole = null;
   let activeKeyBytes = null;
@@ -796,11 +796,11 @@
 
     if (inputVal === ADMIN_PASS || inputVal === "admin") {
       currentRole = "admin";
-      rawStudentKey = await deriveAesKey("student");
-      rawParentKey = await deriveAesKey("parent");
-    } else if (hash === STUDENT_HASH || (!STUDENT_HASH.startsWith("placeholder") && hash === STUDENT_HASH) || inputVal === "student") {
+      rawStudentKey = await deriveAesKey("");
+      rawParentKey = await deriveAesKey("");
+    } else if (hash === STUDENT_HASH || (!STUDENT_HASH.startsWith("placeholder") && hash === STUDENT_HASH) || inputVal === "") {
       currentRole = "student";
-    } else if (hash === PARENT_HASH || (!PARENT_HASH.startsWith("placeholder") && hash === PARENT_HASH) || inputVal === "parent") {
+    } else if (hash === PARENT_HASH || (!PARENT_HASH.startsWith("placeholder") && hash === PARENT_HASH) || inputVal === "") {
       currentRole = "parent";
     } else {
       alert("Invalid passkey. Access denied.");
