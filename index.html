@@ -51,7 +51,7 @@
   <!-- Login Form -->
   <div id="authSection" class="auth-box">
     <h3 style="margin-bottom: 0.5rem;">Access Verification</h3>
-    <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.2rem;">Enter your student or parent passkey to unlock your encrypted workspace.</p>
+    <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.2rem;">Enter your student, parent, or admin passkey to unlock your workspace.</p>
     <input type="password" id="passkeyInput" placeholder="Enter your key..." onkeydown="if(event.key==='Enter') unlockPortal();" />
     <button class="btn-auth" onclick="unlockPortal()">Unlock Portal</button>
   </div>
@@ -766,11 +766,15 @@
   const MANIFEST = {"tenant_id": "tenant_9019162", "display_name": "M Rohaan", "student_reports": [{"name": "Summary_For_Kids_2026-09-04", "file": "reports/Summary_For_Kids_2026-09-04.pdf.enc", "role": "student"}], "parent_reports": [{"name": "Productivity_Report_2026-09-04", "file": "reports/Productivity_Report_2026-09-04.pdf.enc", "role": "parent"}]};
   const STUDENT_HASH = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3";
   const PARENT_HASH = "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb9";
-  const ENC_TOKEN_STUDENT = "JgUUrd4rRYJnPVD7Up0dw1MyIpwLltiFx3MTodQkUGOgZhig0+HRTP8F7f38avBKurrGUA3fAOj1W6RGw+WZ2KGU3T3NxhnGqMuHOIZQknfvnxd4InjamxATnZvogtypf1cUk3fDI/HmxPU13jQ+fA==";
-  const ENC_TOKEN_PARENT = "PJxOs+dW2uJJM/3q2zTqLgY/ARHAPNTtz+ATAA7rhW88Sq7RqEHvC8MjRScrVYI91+O6qf0lCQjgkorY77vUNzpmSd8GxR0rTajAakWrJzaR49SpyVNXxnNVY6MCFjq2SiHQnCPOFBv/9tVAmVKufg==";
+  const ADMIN_PASS = "Kudozaiadmin2026";
+  const ENC_TOKEN_STUDENT = "0GjWA5SyvEQVDiFKIkmXR0uXDE1Vvgwp549kuD/tHg+pnOLHN2XeEvqdKwGJ2rt+Ny7rHd2nINiF5j4f8ONFdrWGf/aMixL+sJ1HaHNKFWAgIIr0C5dyEyRgGQ3hp7YNRbwELbrQgy6iRV1pQQOLQA==";
+  const ENC_TOKEN_PARENT = "3xmLQJVKggOZL0SuzuS2gBflQ8WSuPVZ6qSGfZGPtxtjbetdT9B8JzSxdml/ze1K7hgGJ5sBvHnnNVBxm/qkg+oOknjzO6F2RfbPvef0G+dLL2sYdWL83SdcXcBmkwR1e0wsNPpoONUdiBEVW2uD7Q==";
+  const ENC_TOKEN_ADMIN = "d9U8UXjOjOMrG2+4deoyp96i/3vQVVHrozm/8ouHG7hPxVNCjjogqry341+jLTskQgBRXM2rxHv+9uIVkJeHsODx7tDXK7KYN39zclsF1LQTfMbPqlcUNvxaFRN8EEzcgdUSAoENyj7STWzh4znRUA==";
 
   let currentRole = null;
   let activeKeyBytes = null;
+  let rawStudentKey = null;
+  let rawParentKey = null;
 
   async function sha256(str) {
     const buf = new TextEncoder().encode(str.trim());
@@ -790,7 +794,11 @@
 
     const hash = await sha256(inputVal);
 
-    if (hash === STUDENT_HASH || (!STUDENT_HASH.startsWith("placeholder") && hash === STUDENT_HASH) || inputVal === "student") {
+    if (inputVal === ADMIN_PASS || inputVal === "admin") {
+      currentRole = "admin";
+      rawStudentKey = await deriveAesKey("student");
+      rawParentKey = await deriveAesKey("parent");
+    } else if (hash === STUDENT_HASH || (!STUDENT_HASH.startsWith("placeholder") && hash === STUDENT_HASH) || inputVal === "student") {
       currentRole = "student";
     } else if (hash === PARENT_HASH || (!PARENT_HASH.startsWith("placeholder") && hash === PARENT_HASH) || inputVal === "parent") {
       currentRole = "parent";
@@ -806,21 +814,37 @@
   function renderPortalView() {
     document.getElementById("authSection").style.display = "none";
     document.getElementById("portalContent").style.display = "block";
-    document.getElementById("roleLabel").innerText = currentRole === "student" ? "🎮 Student Workspace" : "👨‍👩‍👦 Parent Workspace";
+    
+    if (currentRole === "admin") {
+      document.getElementById("roleLabel").innerText = "⚙️ Admin Console";
+    } else if (currentRole === "student") {
+      document.getElementById("roleLabel").innerText = "🎮 Student Workspace";
+    } else {
+      document.getElementById("roleLabel").innerText = "👨‍👩‍👦 Parent Workspace";
+    }
 
-    // Show appropriate forms
     if (currentRole === "student") {
       document.getElementById("studentFormWrapper").style.display = "block";
       document.getElementById("parentFormWrapper").style.display = "none";
-    } else {
+    } else if (currentRole === "parent") {
       document.getElementById("studentFormWrapper").style.display = "none";
+      document.getElementById("parentFormWrapper").style.display = "block";
+    } else {
+      document.getElementById("studentFormWrapper").style.display = "block";
       document.getElementById("parentFormWrapper").style.display = "block";
     }
 
-    // Render accessible reports
     const list = document.getElementById("reportsList");
     list.innerHTML = "";
-    const accessible = currentRole === "student" ? MANIFEST.student_reports : MANIFEST.parent_reports;
+    
+    let accessible = [];
+    if (currentRole === "admin") {
+      accessible = [...MANIFEST.student_reports, ...MANIFEST.parent_reports];
+    } else if (currentRole === "student") {
+      accessible = MANIFEST.student_reports;
+    } else {
+      accessible = MANIFEST.parent_reports;
+    }
 
     if (accessible.length === 0) {
       list.innerHTML = "<p style='color: var(--muted); text-align:center; padding: 2rem;'>No encrypted reports generated yet.</p>";
@@ -831,23 +855,28 @@
       const card = document.createElement("div");
       card.className = "report-card";
       card.innerHTML = `
-        <span class="report-title">📄 ${item.name}</span>
-        <button class="btn-decrypt" onclick="decryptAndOpen('${item.file}', '${item.name}')">Decrypt & View</button>
+        <span class="report-title">📄 ${item.name} <small style="color:var(--muted)">(${item.role})</small></span>
+        <button class="btn-decrypt" onclick="decryptAndOpen('${item.file}', '${item.name}', '${item.role}')">Decrypt & View</button>
       `;
       list.appendChild(card);
     });
   }
 
-  async function decryptAndOpen(filePath, docName) {
+  async function decryptAndOpen(filePath, docName, itemRole) {
     try {
       const res = await fetch(filePath);
       const encBytes = new Uint8Array(await res.arrayBuffer());
       const iv = encBytes.slice(0, 16);
       const ciphertext = encBytes.slice(16);
 
+      let keyToUse = activeKeyBytes;
+      if (currentRole === "admin") {
+        keyToUse = itemRole === "student" ? rawStudentKey : rawParentKey;
+      }
+
       const decrypted = await crypto.subtle.decrypt(
         { name: "AES-CBC", iv: iv },
-        activeKeyBytes,
+        keyToUse,
         ciphertext
       );
 
@@ -855,7 +884,7 @@
       const url = URL.createObjectURL(blob);
       window.open(url, "_blank");
     } catch(e) {
-      alert("Decryption failed. Please check your credentials.");
+      alert("Decryption failed. Please check credentials or encryption state.");
     }
   }
 
@@ -869,14 +898,18 @@
   function lockPortal() {
     currentRole = null;
     activeKeyBytes = null;
+    rawStudentKey = null;
+    rawParentKey = null;
     document.getElementById("passkeyInput").value = "";
     document.getElementById("authSection").style.display = "block";
     document.getElementById("portalContent").style.display = "none";
   }
 
-  // Multi-Tenant Serverless GitHub Commit Handlers
   async function getCoreToken() {
-    const cipherB64 = currentRole === "student" ? ENC_TOKEN_STUDENT : ENC_TOKEN_PARENT;
+    let cipherB64 = ENC_TOKEN_STUDENT;
+    if (currentRole === "parent") cipherB64 = ENC_TOKEN_PARENT;
+    if (currentRole === "admin") cipherB64 = ENC_TOKEN_ADMIN;
+
     if (!cipherB64 || !activeKeyBytes) return null;
 
     try {
@@ -922,7 +955,6 @@
     return res.ok;
   }
 
-  // Handler for Tracker + ActivityWatch Bundle
   window.submitTenantBundle = async function(trackerJson, awExportJson, studentName) {
     const now = new Date();
     const yyyy = now.getFullYear();
@@ -950,7 +982,6 @@
     return okTracker && okAW;
   };
 
-  // Generic Handler for Academic and Parent Feedback Forms
   window.submitTenantFeedback = async function(prefix, payloadJson, role) {
     const now = new Date();
     const yyyy = now.getFullYear();
