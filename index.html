@@ -591,12 +591,12 @@ body {
       <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: #fff;">Available Encrypted Deliverables</h3>
       
       <!-- Report Deliverables Category Filter Bar -->
-      <div class="kudoz-filter-bar">
-        
-        <button type="button" class="filter-pill" onclick="filterKudozReports('Productivity_Report', this)">📊 Daily Executive</button>
-        <button type="button" class="filter-pill" onclick="filterKudozReports('Summary_For_Kids', this)">🚀 Kids Quest</button>
-        <button type="button" class="filter-pill" onclick="filterKudozReports('Weekly_Reward', this)">🏆 Weekly Rewards</button>
-      </div>
+     
+      <div class="kudoz-filter-bar" style="margin-bottom: 1.5rem; display: flex; gap: 0.5rem;">
+  <button class="filter-pill active" data-target="executive" onclick="filterKudozReports('executive', this)"> 📊 Executive Reports</button>
+  <button class="filter-pill" data-target="student" onclick="filterKudozReports('student', this)"> 🚀 Student Summaries</button>
+  <button class="filter-pill" data-target="weekly" onclick="filterKudozReports('weekly', this)">🏆 Weekly Rewards</button>
+</div>
 
       <div id="reportsList" class="reports-list"></div>
     </div>
@@ -1805,8 +1805,8 @@ body {
 </div>
 
 <script>
-  window.MANIFEST = {"tenant_id": "tenant_9019162", "display_name": "M Rohaan", "aw_last_synced": "2026-09-06T10:19:08.560024+00:00", "chart_days": ["2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06"], "chart_hours": [3.95, 2.73, 3.13, 3.75, 4.58, 2.23, 0.0], "top_apps_labels": ["ApplicationFrameHost.exe", "chrome.exe", "explorer.exe", "LockApp.exe", "FoxitPDFReader.exe"], "top_apps_values": [40.68, 28.51, 12.54, 7.1, 4.52], "compliance_grid": {"2026-08-31": {"tracker": false, "academic": false, "parent": false}, "2026-09-01": {"tracker": false, "academic": false, "parent": false}, "2026-09-02": {"tracker": false, "academic": false, "parent": false}, "2026-09-03": {"tracker": true, "academic": false, "parent": true}, "2026-09-04": {"tracker": true, "academic": false, "parent": false}, "2026-09-05": {"tracker": true, "academic": true, "parent": true}, "2026-09-06": {"tracker": false, "academic": false, "parent": false}}, "student_reports": [{"name": "Weekly_Reward_Report_V2_2026-09-05", "file": "reports/Weekly_Reward_Report_V2_2026-09-05.pdf.student.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-09-03", "file": "reports/Weekly_Reward_Report_V2_2026-09-03.pdf.student.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-08-31", "file": "reports/Weekly_Reward_Report_V2_2026-08-31.pdf.student.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-06", "file": "reports/Summary_For_Kids_2026-09-06.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-05", "file": "reports/Summary_For_Kids_2026-09-05.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-04", "file": "reports/Summary_For_Kids_2026-09-04.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-03", "file": "reports/Summary_For_Kids_2026-09-03.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-02", "file": "reports/Summary_For_Kids_2026-09-02.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-01", "file": "reports/Summary_For_Kids_2026-09-01.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-31", "file": "reports/Summary_For_Kids_2026-08-31.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-29", "file": "reports/Summary_For_Kids_2026-08-29.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-28", "file": "reports/Summary_For_Kids_2026-08-28.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-27", "file": "reports/Summary_For_Kids_2026-08-27.pdf.enc", "role": "student"}], "parent_reports": [{"name": "Weekly_Reward_Report_V2_2026-09-05", "file": "reports/Weekly_Reward_Report_V2_2026-09-05.pdf.parent.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-09-03", "file": "reports/Weekly_Reward_Report_V2_2026-09-03.pdf.parent.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-08-31", "file": "reports/Weekly_Reward_Report_V2_2026-08-31.pdf.parent.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-06", "file": "reports/Productivity_Report_2026-09-06.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-05", "file": "reports/Productivity_Report_2026-09-05.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-04", "file": "reports/Productivity_Report_2026-09-04.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-03", "file": "reports/Productivity_Report_2026-09-03.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-02", "file": "reports/Productivity_Report_2026-09-02.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-01", "file": "reports/Productivity_Report_2026-09-01.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-31", "file": "reports/Productivity_Report_2026-08-31.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-29", "file": "reports/Productivity_Report_2026-08-29.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-28", "file": "reports/Productivity_Report_2026-08-28.pdf.enc", "role": "parent"}]};
-  const ENV_CONFIG = {"tenant_id": "tenant_9019162", "core_repo": "nooraxollc-source/kudoz-ai-v3.1", "student_hash": "78330c3a837dc8b176305c2878ce5c4bd92cc8b0a31963f5822d7b5e7f2e965a", "parent_hash": "1386c627b0507dd900eea463db1d823e32bb6b6a10409155e95b8bda9d364a4c", "admin_pass": "Kudozaiadmin2026", "token_student": "5tZzFEE4WmGsXAGfI/n7RgxD8laEhyMsvhxOhmA613WfeBMhRLZOddIYfZTIBAZVo2/Yo/dHI7UPn4NiLuPNK6HLZ7Xdkyf1rsjuziEa4LUaoLaipg0/DlyOKcatiE0Ch1INf2vMxrsv8GirpuvDUg==", "token_parent": "yfmTvhSbkZ2lusYvdKFNs2Eqd1lhCvjU2MVpY4P/SSWoTav8KK6U9XADwFOwqnZEiSz2nLs50bsfILIU+Fiz/B+wzQ1S5wG2nbsZjF/tEhmyfdgOcHJWcFrTauD8p+MQBfjF2h99PQZyEPPDnCkEVQ==", "token_admin": "pzWAd6MwTfiqC1J2E4+r1OVZn5CsudOoWR4B5jh4bRdcXnDA6uibpL9XecMO6Z3cG+o+733xyIcLUIpdA+oPGem5bsXBfo4rZMkkRHJNrf6yO49jsDX78aDnXAfFyp2pY+o2t/Jj/5maidVhHvpYuA=="};
+  window.MANIFEST = {"tenant_id": "tenant_9019162", "display_name": "M Rohaan", "aw_last_synced": "2026-09-06T10:28:57.882952+00:00", "chart_days": ["2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06"], "chart_hours": [3.95, 2.73, 3.13, 3.75, 4.58, 2.23, 0.0], "top_apps_labels": ["ApplicationFrameHost.exe", "chrome.exe", "explorer.exe", "LockApp.exe", "FoxitPDFReader.exe"], "top_apps_values": [40.68, 28.51, 12.54, 7.1, 4.52], "compliance_grid": {"2026-08-31": {"tracker": false, "academic": false, "parent": false}, "2026-09-01": {"tracker": false, "academic": false, "parent": false}, "2026-09-02": {"tracker": false, "academic": false, "parent": false}, "2026-09-03": {"tracker": true, "academic": false, "parent": true}, "2026-09-04": {"tracker": true, "academic": false, "parent": false}, "2026-09-05": {"tracker": true, "academic": true, "parent": true}, "2026-09-06": {"tracker": false, "academic": false, "parent": false}}, "student_reports": [{"name": "Weekly_Reward_Report_V2_2026-09-05", "file": "reports/Weekly_Reward_Report_V2_2026-09-05.pdf.student.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-09-03", "file": "reports/Weekly_Reward_Report_V2_2026-09-03.pdf.student.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-08-31", "file": "reports/Weekly_Reward_Report_V2_2026-08-31.pdf.student.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-06", "file": "reports/Summary_For_Kids_2026-09-06.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-05", "file": "reports/Summary_For_Kids_2026-09-05.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-04", "file": "reports/Summary_For_Kids_2026-09-04.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-03", "file": "reports/Summary_For_Kids_2026-09-03.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-02", "file": "reports/Summary_For_Kids_2026-09-02.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-01", "file": "reports/Summary_For_Kids_2026-09-01.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-31", "file": "reports/Summary_For_Kids_2026-08-31.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-29", "file": "reports/Summary_For_Kids_2026-08-29.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-28", "file": "reports/Summary_For_Kids_2026-08-28.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-27", "file": "reports/Summary_For_Kids_2026-08-27.pdf.enc", "role": "student"}], "parent_reports": [{"name": "Weekly_Reward_Report_V2_2026-09-05", "file": "reports/Weekly_Reward_Report_V2_2026-09-05.pdf.parent.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-09-03", "file": "reports/Weekly_Reward_Report_V2_2026-09-03.pdf.parent.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-08-31", "file": "reports/Weekly_Reward_Report_V2_2026-08-31.pdf.parent.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-06", "file": "reports/Productivity_Report_2026-09-06.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-05", "file": "reports/Productivity_Report_2026-09-05.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-04", "file": "reports/Productivity_Report_2026-09-04.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-03", "file": "reports/Productivity_Report_2026-09-03.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-02", "file": "reports/Productivity_Report_2026-09-02.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-01", "file": "reports/Productivity_Report_2026-09-01.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-31", "file": "reports/Productivity_Report_2026-08-31.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-29", "file": "reports/Productivity_Report_2026-08-29.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-28", "file": "reports/Productivity_Report_2026-08-28.pdf.enc", "role": "parent"}]};
+  const ENV_CONFIG = {"tenant_id": "tenant_9019162", "core_repo": "nooraxollc-source/kudoz-ai-v3.1", "student_hash": "78330c3a837dc8b176305c2878ce5c4bd92cc8b0a31963f5822d7b5e7f2e965a", "parent_hash": "1386c627b0507dd900eea463db1d823e32bb6b6a10409155e95b8bda9d364a4c", "admin_pass": "Kudozaiadmin2026", "token_student": "/D9btLzXA/lVTmRMaQBvcC3RMPreT1YHqXQjOt8nLIcRsDCzhr3gzGF7+O26xdN+J4Son9kH4yuCX4FMY1aYT8Ek+AoBS9zg6jkb8MY8wclzsFnuIfl3be1qYVPPbshzVCKRSXTou84ePr3m/Lxxnw==", "token_parent": "i+sBFtM+6D29EzZis1av8domTyh9KA3WfhAuUF3s4qbN178yQ0CAd7oD/Y0lB55D1lR/h9xeeaR2Qy5Z4pdf2xfJEZU9MwiEhBpZyNxibTZZNWwVP+aYegBZ684lRccdQGulgFrzp5sri5D+ZXbw4g==", "token_admin": "BxRyw2RMoL8c1TwtbwFp585SU6AzJ2lSfn46DGRAroF6459rZOxV23CVhYpE4EclknZ35fHsYYKiDpCNXzRrXyJN96O4cpE4BTvvhuMBa9dklYhb/0hptX72Fxjv9/kd3rdut3i51gA4Tvh5Kea4xg=="};
 </script>
 <script>
   let currentRole = null;
@@ -1973,8 +1973,9 @@ function renderReportsList() {
   // Deduplicate files for admin view
   const seen = new Set();
   accessible = accessible.filter(item => {
-    if (seen.has(item.file)) return false;
-    seen.add(item.file);
+    const key = item.file || item.name;
+    if (seen.has(key)) return false;
+    seen.add(key);
     return true;
   });
 
@@ -1985,7 +1986,7 @@ function renderReportsList() {
     return;
   }
 
-  // Segregate deliverables into their three target categories
+  // Segregate deliverables into categories (case-insensitive check)
   const categories = {
     weekly: [],
     student: [],
@@ -1993,10 +1994,10 @@ function renderReportsList() {
   };
 
   accessible.forEach(item => {
-    const fname = item.file.toLowerCase();
-    if (fname.includes("weekly_reward")) {
+    const checkTarget = ((item.file || "") + " " + (item.name || "")).toLowerCase();
+    if (checkTarget.includes("weekly_reward") || checkTarget.includes("reward")) {
       categories.weekly.push(item);
-    } else if (fname.includes("summary_for_kids")) {
+    } else if (checkTarget.includes("summary_for_kids") || checkTarget.includes("kid")) {
       categories.student.push(item);
     } else {
       categories.executive.push(item);
@@ -2030,12 +2031,19 @@ function renderReportsList() {
     list.appendChild(card);
   });
 
-  // Default filter to the first available category pill (or Executive)
-  const defaultPill = document.querySelector(".kudoz-filter-bar .filter-pill") || null;
-  if (defaultPill) {
-    const defaultCat = defaultPill.getAttribute("onclick")?.match(/'([^']+)'/)?.[1] || "executive";
-    filterKudozReports(defaultCat, defaultPill);
+  // Determine appropriate initial category based on logged-in role
+  let initialCat = "executive";
+  if (currentRole === "student") {
+    initialCat = categories.student.length > 0 ? "student" : "weekly";
+  } else if (categories.executive.length === 0) {
+    initialCat = categories.weekly.length > 0 ? "weekly" : "student";
   }
+
+  // Activate the matching tab pill
+  const targetPill = document.querySelector(`.kudoz-filter-bar .filter-pill[data-target="${initialCat}"]`) ||
+                     document.querySelector(".kudoz-filter-bar .filter-pill");
+
+  filterKudozReports(initialCat, targetPill);
 }
 
 function initCharts() {
@@ -2257,10 +2265,33 @@ window.filterKudozReports = function(categoryKey, clickedBtn) {
   if (clickedBtn) clickedBtn.classList.add("active");
 
   const reportCards = document.querySelectorAll(".report-card");
+  let visibleCount = 0;
+
   reportCards.forEach(card => {
     const cardCat = card.getAttribute("data-category") || "";
-    card.style.display = (cardCat === categoryKey.toLowerCase()) ? "" : "none";
+    if (cardCat === categoryKey.toLowerCase()) {
+      card.style.display = "";
+      visibleCount++;
+    } else {
+      card.style.display = "none";
+    }
   });
+
+  // If no reports exist for this specific tab, show empty feedback
+  const emptyNotice = document.getElementById("categoryEmptyNotice");
+  if (visibleCount === 0) {
+    if (!emptyNotice) {
+      const notice = document.createElement("p");
+      notice.id = "categoryEmptyNotice";
+      notice.style.cssText = "color: var(--muted); text-align:center; padding: 2rem;";
+      notice.innerText = "No reports found in this category.";
+      document.getElementById("reportsList").appendChild(notice);
+    } else {
+      emptyNotice.style.display = "block";
+    }
+  } else if (emptyNotice) {
+    emptyNotice.style.display = "none";
+  }
 };
 
 </script>
