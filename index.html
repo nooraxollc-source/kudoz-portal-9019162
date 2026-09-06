@@ -370,6 +370,143 @@ body {
   margin-top: 1rem;
 }
 
+/* --- Kudoz Deliverables Filter Bar --- */
+.kudoz-filter-bar {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 16px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-pill {
+  background: #f8fafc;
+  color: #475569;
+  border: 1.5px solid #cbd5e1;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.filter-pill:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.filter-pill.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+/* --- In-Portal PDF Viewer Modal --- */
+.kudoz-pdf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(3px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.kudoz-pdf-modal-dialog {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1120px;
+  height: 92vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  border: 1px solid #334155;
+}
+
+.kudoz-pdf-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  background: #0f172a;
+  color: #ffffff;
+  border-bottom: 1px solid #1e293b;
+}
+
+.modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-header-left .modal-icon {
+  font-size: 16px;
+}
+
+.modal-header-left h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.modal-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-modal-action {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.btn-modal-action:hover {
+  opacity: 0.9;
+}
+
+.btn-download {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn-close {
+  background: #334155;
+  color: #ffffff;
+}
+
+.kudoz-pdf-modal-body {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background: #525659;
+}
+
+.kudoz-pdf-modal-body iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
   </style>
 </head>
 <body>
@@ -452,6 +589,15 @@ body {
       </div>
 
       <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: #fff;">Available Encrypted Deliverables</h3>
+      
+      <!-- Report Deliverables Category Filter Bar -->
+      <div class="kudoz-filter-bar">
+        <button type="button" class="filter-pill active" onclick="filterKudozReports('all', this)">📁 All</button>
+        <button type="button" class="filter-pill" onclick="filterKudozReports('Productivity_Report', this)">📊 Daily Executive</button>
+        <button type="button" class="filter-pill" onclick="filterKudozReports('Summary_For_Kids', this)">🚀 Kids Quest</button>
+        <button type="button" class="filter-pill" onclick="filterKudozReports('Weekly_Reward', this)">🏆 Weekly Rewards</button>
+      </div>
+
       <div id="reportsList" class="reports-list"></div>
     </div>
 
@@ -1168,6 +1314,13 @@ body {
     box-sizing: border-box;
     font-size: 13px;
   }
+  .kudoz-academic-container .pct-text {
+    font-weight: 700;
+    font-size: 12.5px;
+    color: #2563eb;
+    text-align: center;
+    display: block;
+  }
   .kudoz-academic-container .btn-add {
     background: #10b981;
     color: white;
@@ -1208,6 +1361,14 @@ body {
     color: #64748b;
     font-weight: normal;
   }
+  .academic-footer-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #64748b;
+  }
 </style>
 
 <div class="kudoz-academic-container">
@@ -1224,11 +1385,12 @@ body {
   <table>
     <thead>
       <tr>
-        <th style="width: 25%;">Category / Institution</th>
-        <th style="width: 30%;">Subject</th>
-        <th style="width: 18%;">Obtained Marks</th>
-        <th style="width: 18%;">Total Marks</th>
-        <th style="width: 9%; text-align: center;">Action</th>
+        <th style="width: 24%;">Category / Institution</th>
+        <th style="width: 28%;">Subject</th>
+        <th style="width: 16%;">Obtained Marks</th>
+        <th style="width: 16%;">Total Marks</th>
+        <th style="width: 10%; text-align: center;">Score %</th>
+        <th style="width: 6%; text-align: center;">Action</th>
       </tr>
     </thead>
     <tbody id="testTableBody">
@@ -1237,28 +1399,57 @@ body {
   </table>
 
   <button type="button" class="btn-add" onclick="addAcademicRow()">+ Add Subject Record</button>
+  
   <button type="button" class="btn-submit-action" onclick="submitAcademicProgress()">
     🚀 Push Academic Tests to KudozAI Server
   </button>
+  
+  <div class="academic-footer-bar">
+    <span id="academicDraftStatus">Auto-saves draft locally</span>
+    <span id="academicCumulativeStatus">Cumulative Score: 0.0%</span>
+  </div>
 </div>
 
 <script>
+  const ACADEMIC_DRAFT_KEY = "kudoz_v31_academic_draft";
+  const MAX_RECORDS = 50;
+
   (function() {
     const dateInput = document.getElementById('academicSubmissionDate');
     if (dateInput) dateInput.valueAsDate = new Date();
+    restoreAcademicDraft();
   })();
 
-  const MAX_RECORDS = 50;
-
-  function updateCounter() {
+  function updateCounterAndAverages() {
     const tableBody = document.getElementById('testTableBody');
     const recordCounter = document.getElementById('recordCounter');
     if (tableBody && recordCounter) {
       recordCounter.textContent = `${tableBody.rows.length} / ${MAX_RECORDS} Records`;
     }
+
+    let grandObt = 0;
+    let grandTot = 0;
+    const rows = tableBody.rows;
+    for (let i = 0; i < rows.length; i++) {
+      const obt = parseFloat(rows[i].querySelector('.obtained-input').value) || 0;
+      const tot = parseFloat(rows[i].querySelector('.total-input').value) || 0;
+      const pctLabel = rows[i].querySelector('.pct-text');
+      
+      const pct = tot > 0 ? ((obt / tot) * 100).toFixed(1) : "0.0";
+      if (pctLabel) pctLabel.textContent = `${pct}%`;
+
+      grandObt += obt;
+      grandTot += tot;
+    }
+
+    const cumPct = grandTot > 0 ? ((grandObt / grandTot) * 100).toFixed(1) : "0.0";
+    const cumLabel = document.getElementById('academicCumulativeStatus');
+    if (cumLabel) cumLabel.textContent = `Cumulative Score: ${cumPct}%`;
+
+    saveAcademicDraft();
   }
 
-  function addAcademicRow() {
+  function addAcademicRow(initialData = {}) {
     const tableBody = document.getElementById('testTableBody');
     if (tableBody.rows.length >= MAX_RECORDS) {
       alert("Maximum limit of 50 test records reached.");
@@ -1266,28 +1457,37 @@ body {
     }
 
     const row = tableBody.insertRow();
+    const cat = initialData.category || "School";
+    const subj = initialData.subject || "";
+    const obt = initialData.obtained !== undefined ? initialData.obtained : "";
+    const tot = initialData.total !== undefined ? initialData.total : 50;
+    const pct = (obt && tot) ? ((obt / tot) * 100).toFixed(1) : "0.0";
+
     row.innerHTML = `
       <td>
-        <select class="category-input">
-          <option value="School">School Exam / Quiz</option>
-          <option value="Academy">Academy / Coaching Test</option>
-          <option value="Home">Home Practice Test</option>
+        <select class="category-input" onchange="updateCounterAndAverages()">
+          <option value="School" ${cat === "School" ? "selected" : ""}>School Exam / Quiz</option>
+          <option value="Academy" ${cat === "Academy" ? "selected" : ""}>Academy / Coaching Test</option>
+          <option value="Home" ${cat === "Home" ? "selected" : ""}>Home Practice Test</option>
         </select>
       </td>
       <td>
-        <input type="text" class="subject-input" placeholder="e.g. Mathematics" required>
+        <input type="text" class="subject-input" value="${subj}" placeholder="e.g. Mathematics" required oninput="updateCounterAndAverages()">
       </td>
       <td>
-        <input type="number" class="obtained-input" step="0.5" min="0" placeholder="45" required>
+        <input type="number" class="obtained-input" step="0.5" min="0" value="${obt}" placeholder="45" required oninput="updateCounterAndAverages()">
       </td>
       <td>
-        <input type="number" class="total-input" step="0.5" min="0.5" placeholder="50" required>
+        <input type="number" class="total-input" step="0.5" min="0.5" value="${tot}" placeholder="50" required oninput="updateCounterAndAverages()">
+      </td>
+      <td style="text-align: center;">
+        <span class="pct-text">${pct}%</span>
       </td>
       <td style="text-align: center;">
         <button type="button" class="btn-delete" onclick="removeAcademicRow(this)">✕</button>
       </td>
     `;
-    updateCounter();
+    updateCounterAndAverages();
   }
 
   function removeAcademicRow(btn) {
@@ -1297,7 +1497,40 @@ body {
       return;
     }
     btn.closest('tr').remove();
-    updateCounter();
+    updateCounterAndAverages();
+  }
+
+  function saveAcademicDraft() {
+    const tableBody = document.getElementById('testTableBody');
+    const rows = tableBody.rows;
+    const dataList = [];
+    for (let i = 0; i < rows.length; i++) {
+      dataList.push({
+        category: rows[i].querySelector('.category-input').value,
+        subject: rows[i].querySelector('.subject-input').value,
+        obtained: rows[i].querySelector('.obtained-input').value,
+        total: rows[i].querySelector('.total-input').value
+      });
+    }
+    localStorage.setItem(ACADEMIC_DRAFT_KEY, JSON.stringify(dataList));
+    const st = document.getElementById('academicDraftStatus');
+    if (st) st.textContent = "Draft auto-saved locally";
+  }
+
+  function restoreAcademicDraft() {
+    const tableBody = document.getElementById('testTableBody');
+    tableBody.innerHTML = "";
+    const raw = localStorage.getItem(ACADEMIC_DRAFT_KEY);
+    if (raw) {
+      try {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list) && list.length > 0) {
+          list.forEach(item => addAcademicRow(item));
+          return;
+        }
+      } catch (e) {}
+    }
+    addAcademicRow();
   }
 
   async function submitAcademicProgress() {
@@ -1349,15 +1582,12 @@ body {
     if (window.submitTenantFeedback) {
       const ok = await window.submitTenantFeedback("academic_tests", payload, "parent");
       if (ok) {
+        localStorage.removeItem(ACADEMIC_DRAFT_KEY);
         alert("🎉 Successfully pushed Academic Tests to KudozAI Server!");
       }
     } else {
       alert("Portal core handler window.submitTenantFeedback not found.");
     }
-  }
-
-  if (document.getElementById('testTableBody') && document.getElementById('testTableBody').rows.length === 0) {
-    addAcademicRow();
   }
 </script>
 
@@ -1553,11 +1783,30 @@ body {
       </div>
     </div>
   </div>
+
+  <!-- In-Portal PDF Viewer Modal -->
+  <div id="kudozPdfModal" class="kudoz-pdf-modal-overlay" style="display: none;" onclick="handlePdfModalBackdropClick(event)">
+    <div class="kudoz-pdf-modal-dialog">
+      <div class="kudoz-pdf-modal-header">
+        <div class="modal-header-left">
+          <span class="modal-icon">📄</span>
+          <h3 id="kudozPdfModalTitle">Document Viewer</h3>
+        </div>
+        <div class="modal-header-actions">
+          <a id="kudozPdfDownloadBtn" href="#" download class="btn-modal-action btn-download">📥 Download PDF</a>
+          <button type="button" class="btn-modal-action btn-close" onclick="closeKudozPdfViewer()">✕ Close</button>
+        </div>
+      </div>
+      <div class="kudoz-pdf-modal-body">
+        <iframe id="kudozPdfFrame" src="" frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-  window.MANIFEST = {"tenant_id": "tenant_9019162", "display_name": "M Rohaan", "aw_last_synced": "2026-09-05T17:51:50.304636+00:00", "chart_days": ["2026-08-30", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05"], "chart_hours": [2.64, 3.95, 2.73, 3.13, 3.75, 4.58, 2.23], "top_apps_labels": ["ApplicationFrameHost.exe", "chrome.exe", "explorer.exe", "LockApp.exe", "FoxitPDFReader.exe"], "top_apps_values": [40.68, 28.51, 12.54, 7.1, 4.52], "compliance_grid": {"2026-08-30": {"tracker": false, "academic": false, "parent": false}, "2026-08-31": {"tracker": false, "academic": false, "parent": false}, "2026-09-01": {"tracker": false, "academic": false, "parent": false}, "2026-09-02": {"tracker": false, "academic": false, "parent": false}, "2026-09-03": {"tracker": true, "academic": false, "parent": true}, "2026-09-04": {"tracker": true, "academic": false, "parent": false}, "2026-09-05": {"tracker": true, "academic": true, "parent": true}}, "student_reports": [{"name": "Summary_For_Kids_2026-08-27", "file": "reports/Summary_For_Kids_2026-08-27.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-28", "file": "reports/Summary_For_Kids_2026-08-28.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-29", "file": "reports/Summary_For_Kids_2026-08-29.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-31", "file": "reports/Summary_For_Kids_2026-08-31.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-01", "file": "reports/Summary_For_Kids_2026-09-01.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-02", "file": "reports/Summary_For_Kids_2026-09-02.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-03", "file": "reports/Summary_For_Kids_2026-09-03.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-04", "file": "reports/Summary_For_Kids_2026-09-04.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-05", "file": "reports/Summary_For_Kids_2026-09-05.pdf.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-08-31", "file": "reports/Weekly_Reward_Report_V2_2026-08-31.pdf.student.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-09-03", "file": "reports/Weekly_Reward_Report_V2_2026-09-03.pdf.student.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-09-05", "file": "reports/Weekly_Reward_Report_V2_2026-09-05.pdf.student.enc", "role": "student"}], "parent_reports": [{"name": "Productivity_Report_2026-08-28", "file": "reports/Productivity_Report_2026-08-28.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-29", "file": "reports/Productivity_Report_2026-08-29.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-31", "file": "reports/Productivity_Report_2026-08-31.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-01", "file": "reports/Productivity_Report_2026-09-01.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-02", "file": "reports/Productivity_Report_2026-09-02.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-03", "file": "reports/Productivity_Report_2026-09-03.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-04", "file": "reports/Productivity_Report_2026-09-04.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-05", "file": "reports/Productivity_Report_2026-09-05.pdf.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-08-31", "file": "reports/Weekly_Reward_Report_V2_2026-08-31.pdf.parent.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-09-03", "file": "reports/Weekly_Reward_Report_V2_2026-09-03.pdf.parent.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-09-05", "file": "reports/Weekly_Reward_Report_V2_2026-09-05.pdf.parent.enc", "role": "parent"}]};
-  const ENV_CONFIG = {"tenant_id": "tenant_9019162", "core_repo": "nooraxollc-source/kudoz-ai-v3.1", "student_hash": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "parent_hash": "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb9", "admin_pass": "Kudozaiadmin2026", "token_student": "9rBzcHUIYT4ONzMuDq2QgWe4jbOf2AjBPRWFzeIoj9V7Y0UbdzvZ77K2F80SEW+ARfISfHGqARZe7dRlus9CHiTZCNjdLqax9c4t/XuzVmzE5vfcddfjPZUVVHIaSpm0ln/Sstkd/pgVwKJca3GwWA==", "token_parent": "3FpalE0tHflDbS+wSbplhxmSZ3z8janUmSQAYH8gRmBcpS2yYy0WMOusZwwb8UmvVLKmGkSMvGNg+EGw/yWeLVFqT0pLfEBWqrM1gw41+zBkikYj6uCZTtQYQcKA7BC7bUmwfU5LgLtAKygEzx0RAA==", "token_admin": "B2A627nFc/NOgKCLCg7qNM0XIeUFs4J//VkIxBaec1iAENxDPFdR667EaAoPullT3Yc1lJR7oVExXChCM2Z55oE6mO7ApVFJGobWSBeuwz8Rb/X7jHbnMj3Sfk5d4egSgT1UUzjBWN33BIYYyblDaQ=="};
+  window.MANIFEST = {"tenant_id": "tenant_9019162", "display_name": "M Rohaan", "aw_last_synced": "2026-09-06T09:58:58.437897+00:00", "chart_days": ["2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06"], "chart_hours": [3.95, 2.73, 3.13, 3.75, 4.58, 2.23, 0.0], "top_apps_labels": ["ApplicationFrameHost.exe", "chrome.exe", "explorer.exe", "LockApp.exe", "FoxitPDFReader.exe"], "top_apps_values": [40.68, 28.51, 12.54, 7.1, 4.52], "compliance_grid": {"2026-08-31": {"tracker": false, "academic": false, "parent": false}, "2026-09-01": {"tracker": false, "academic": false, "parent": false}, "2026-09-02": {"tracker": false, "academic": false, "parent": false}, "2026-09-03": {"tracker": true, "academic": false, "parent": true}, "2026-09-04": {"tracker": true, "academic": false, "parent": false}, "2026-09-05": {"tracker": true, "academic": true, "parent": true}, "2026-09-06": {"tracker": false, "academic": false, "parent": false}}, "student_reports": [{"name": "Summary_For_Kids_2026-08-27", "file": "reports/Summary_For_Kids_2026-08-27.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-28", "file": "reports/Summary_For_Kids_2026-08-28.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-29", "file": "reports/Summary_For_Kids_2026-08-29.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-08-31", "file": "reports/Summary_For_Kids_2026-08-31.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-01", "file": "reports/Summary_For_Kids_2026-09-01.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-02", "file": "reports/Summary_For_Kids_2026-09-02.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-03", "file": "reports/Summary_For_Kids_2026-09-03.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-04", "file": "reports/Summary_For_Kids_2026-09-04.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-05", "file": "reports/Summary_For_Kids_2026-09-05.pdf.enc", "role": "student"}, {"name": "Summary_For_Kids_2026-09-06", "file": "reports/Summary_For_Kids_2026-09-06.pdf.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-08-31", "file": "reports/Weekly_Reward_Report_V2_2026-08-31.pdf.student.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-09-03", "file": "reports/Weekly_Reward_Report_V2_2026-09-03.pdf.student.enc", "role": "student"}, {"name": "Weekly_Reward_Report_V2_2026-09-05", "file": "reports/Weekly_Reward_Report_V2_2026-09-05.pdf.student.enc", "role": "student"}], "parent_reports": [{"name": "Productivity_Report_2026-08-28", "file": "reports/Productivity_Report_2026-08-28.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-29", "file": "reports/Productivity_Report_2026-08-29.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-08-31", "file": "reports/Productivity_Report_2026-08-31.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-01", "file": "reports/Productivity_Report_2026-09-01.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-02", "file": "reports/Productivity_Report_2026-09-02.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-03", "file": "reports/Productivity_Report_2026-09-03.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-04", "file": "reports/Productivity_Report_2026-09-04.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-05", "file": "reports/Productivity_Report_2026-09-05.pdf.enc", "role": "parent"}, {"name": "Productivity_Report_2026-09-06", "file": "reports/Productivity_Report_2026-09-06.pdf.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-08-31", "file": "reports/Weekly_Reward_Report_V2_2026-08-31.pdf.parent.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-09-03", "file": "reports/Weekly_Reward_Report_V2_2026-09-03.pdf.parent.enc", "role": "parent"}, {"name": "Weekly_Reward_Report_V2_2026-09-05", "file": "reports/Weekly_Reward_Report_V2_2026-09-05.pdf.parent.enc", "role": "parent"}]};
+  const ENV_CONFIG = {"tenant_id": "tenant_9019162", "core_repo": "nooraxollc-source/kudoz-ai-v3.1", "student_hash": "78330c3a837dc8b176305c2878ce5c4bd92cc8b0a31963f5822d7b5e7f2e965a", "parent_hash": "1386c627b0507dd900eea463db1d823e32bb6b6a10409155e95b8bda9d364a4c", "admin_pass": "Kudozaiadmin2026", "token_student": "AyaiQMOoiy8Hs1PKGarAOAJBCdYGs8F9wdj6yfDZ4dFVt0eg+VnWUx9mmLmXXMrYq/GyJdsl0eVRv8MVUwjzQsLoFYnEvz9yDRcQ6XVgicwQk+nNguIv6kXmoVMxJg7fCJzR2iTptZorTokXPhQUOw==", "token_parent": "fmrvZqBwX/XMWqJ1Mez15i+2la90jYMIM0tQA+RaKzB3wPCDRpdz5O6C3ouv3eXNK2KtsKW+9DHarAevmgJiscA6291cloam2ECuKknE/binRSQ/cELdOXQw52Gag2DlMu64/TwIoAsoFFQoOhQ8ZQ==", "token_admin": "ec5yjhGHw8aFWmNDnqgSwTpjoV0XcPvzGErvbbdbbxZjlcDRoCg7g104VXZ4UpV/IUD9YWkEaMt2Avqt37+3lBfOcKI5Zb+AMFDsosH7u1tJMepXNSjiAAVVWkYLEjRXoGehFlLS8bL9hRUxSgsBiw=="};
 </script>
 <script>
   let currentRole = null;
@@ -1609,15 +1858,15 @@ async function unlockPortal() {
 
   const inputHash = await sha256Hex(inputVal);
 
-  if (inputVal === ENV_CONFIG.admin_pass || inputVal === "admin") {
+  if (inputVal === ENV_CONFIG.admin_pass) {
     currentRole = "admin";
     activeKeyBytes = await deriveKeyFromPlain(inputVal);
     rawStudentKey = await deriveKeyFromHash(ENV_CONFIG.tenant_id, ENV_CONFIG.student_hash);
     rawParentKey = await deriveKeyFromHash(ENV_CONFIG.tenant_id, ENV_CONFIG.parent_hash);
-  } else if (inputHash === ENV_CONFIG.student_hash || inputVal === "student") {
+  } else if (inputHash === ENV_CONFIG.student_hash) {
     currentRole = "student";
     activeKeyBytes = await deriveKeyFromHash(ENV_CONFIG.tenant_id, ENV_CONFIG.student_hash);
-  } else if (inputHash === ENV_CONFIG.parent_hash || inputVal === "parent") {
+  } else if (inputHash === ENV_CONFIG.parent_hash) {
     currentRole = "parent";
     activeKeyBytes = await deriveKeyFromHash(ENV_CONFIG.tenant_id, ENV_CONFIG.parent_hash);
   } else {
@@ -1731,6 +1980,7 @@ function renderReportsList() {
   accessible.forEach(item => {
     const card = document.createElement("div");
     card.className = "report-card";
+    card.setAttribute("data-report-type", item.file || item.name);
     const icon = item.name.includes("Kid") ? "🎮" : (item.name.includes("Reward") ? "🏆" : "📈");
     card.innerHTML = `
       <div class="report-meta">
@@ -1809,7 +2059,13 @@ async function decryptAndOpen(filePath, docName, itemRole) {
 
     const decrypted = await crypto.subtle.decrypt({ name: "AES-CBC", iv: iv }, keyToUse, ciphertext);
     const blob = new Blob([decrypted], { type: "application/pdf" });
-    window.open(URL.createObjectURL(blob), "_blank");
+    const blobUrl = URL.createObjectURL(blob);
+
+    if (typeof window.openKudozPdfViewer === "function") {
+      window.openKudozPdfViewer(blobUrl, docName);
+    } else {
+      window.open(blobUrl, "_blank");
+    }
   } catch (e) {
     alert("Decryption failed. Ensure the passkey matches this report's encryption key.");
   }
@@ -1903,6 +2159,70 @@ window.submitTenantFeedback = async function(prefix, payloadJson, role) {
   const dd = String(now.getDate()).padStart(2, '0');
   const feedbackPath = `data/${ENV_CONFIG.tenant_id}/feedbacks/${prefix}_${yyyy}_${mm}_${dd}.json`;
   return await pushFileToCore(feedbackPath, JSON.stringify(payloadJson, null, 2), `chore(${ENV_CONFIG.tenant_id}): submit ${prefix} [skip ci]`);
+};
+
+// --- In-Portal PDF Viewer Modal Controller ---
+// --- In-Portal PDF Viewer Modal Controller ---
+window.openKudozPdfViewer = function(pdfUrl, displayTitle) {
+  const modal = document.getElementById("kudozPdfModal");
+  const iframe = document.getElementById("kudozPdfFrame");
+  const titleEl = document.getElementById("kudozPdfModalTitle");
+  const downloadBtn = document.getElementById("kudozPdfDownloadBtn");
+
+  if (!modal || !iframe) {
+    window.open(pdfUrl, "_blank");
+    return;
+  }
+
+  const cleanName = displayTitle || "Kudoz AI Deliverable";
+  if (titleEl) titleEl.textContent = cleanName;
+  if (downloadBtn) {
+    downloadBtn.href = pdfUrl;
+    downloadBtn.setAttribute("download", cleanName.endsWith(".pdf") ? cleanName : `${cleanName}.pdf`);
+  }
+
+  iframe.src = pdfUrl;
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+};
+
+window.closeKudozPdfViewer = function() {
+  const modal = document.getElementById("kudozPdfModal");
+  const iframe = document.getElementById("kudozPdfFrame");
+  if (iframe) iframe.src = "";
+  if (modal) modal.style.display = "none";
+  document.body.style.overflow = "";
+};
+
+window.handlePdfModalBackdropClick = function(event) {
+  if (event.target.id === "kudozPdfModal") {
+    closeKudozPdfViewer();
+  }
+};
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    const modal = document.getElementById("kudozPdfModal");
+    if (modal && modal.style.display === "flex") {
+      closeKudozPdfViewer();
+    }
+  }
+});
+
+// --- Deliverables Filter Controller ---
+window.filterKudozReports = function(categoryKey, clickedBtn) {
+  document.querySelectorAll(".kudoz-filter-bar .filter-pill").forEach(p => p.classList.remove("active"));
+  if (clickedBtn) clickedBtn.classList.add("active");
+
+  const reportCards = document.querySelectorAll(".report-card");
+  reportCards.forEach(card => {
+    if (categoryKey === "all") {
+      card.style.display = "";
+      return;
+    }
+    const cardText = (card.getAttribute("data-report-type") || card.textContent || "").toLowerCase();
+    card.style.display = cardText.includes(categoryKey.toLowerCase()) ? "" : "none";
+  });
 };
 
 </script>
